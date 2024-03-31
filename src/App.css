@@ -1,0 +1,29 @@
+.app-container{
+    background-color: rgb(236, 177, 67);
+    padding-bottom: 20px;
+    min-height: 100vh;
+    
+
+}
+
+.search-container{
+  text-align: center;
+}
+
+h1 {
+    text-align: center; /* Centrera texten horisontellt */
+  }
+
+
+.recipe-card {
+    display: inline-block;
+    margin: 10px;
+    width: 200px; /* Justera bredden efter behov */
+    text-align: center;
+  }
+  
+  .recipe-image {
+    width: 100%;
+    height: auto;
+  }
+  
