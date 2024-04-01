@@ -9,15 +9,15 @@ function App() {
 
   const handleMealClick = (mealId) => {
     setSelectedMealId(mealId);
-    setSearchResults([]); // Nollställer sökresultaten till en tom array när en måltid väljs
+    setSearchResults([]); // Här ska den nollställa sökresultaten till en tom array när en maträtt väljs
   };
 
   return (
     <div className="app-container">
       <h1>Maträttsapplikation</h1>
       <div className="search-container">
-        {/* Skicka setSearchResults som en prop till SearchComponent */}
-        <SearchComponent onMealClick={handleMealClick} setSearchResults={setSearchResults} />
+        {/* Här ska det skicka setSearchResults som en prop till SearchComponent */}
+        <SearchComponent onMealClick={handleMealClick} setSearchResults={setSearchResults} searchResults={searchResults} />
       </div>
       <div className="details-container">
         {selectedMealId && <MealDetails mealId={selectedMealId} />}
@@ -27,6 +27,3 @@ function App() {
 }
 
 export default App;
-
-
-

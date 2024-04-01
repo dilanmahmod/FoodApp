@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
-import RecipeCard from './RecipeCard'; // Importera RecipeCard-komponenten
+import RecipeCard from './RecipeCard';
 
-const SearchComponent = ({ onMealClick }) => {
+const SearchComponent = ({ onMealClick, setSearchResults, searchResults }) => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [selectedMealId, setSelectedMealId] = useState(null);
+    const [noResultsFound, setNoResultsFound] = useState(false);
 
-    // TODO: Hur gör jag för att återställa sökresultatet?
-    // Kanske genom att setSearchResults blir tom, null...?
     const handleSearch = async () => {
         setLoading(true);
         try {
             const response = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`);
             const data = await response.json();
             setSearchResults(data.meals || []);
+            setNoResultsFound(data.meals === null || data.meals.length === 0); // Här ska det uppdatera noResultsFound beroende på sökresultaten
         } catch (error) {
             console.error('Error fetching meals:', error);
             setSearchResults([]);
@@ -25,11 +23,11 @@ const SearchComponent = ({ onMealClick }) => {
 
     const handleInputChange = (event) => {
         setSearchTerm(event.target.value);
+        setNoResultsFound(false); // Återställa noResultsFound när användaren börjar skriva igen
     };
 
     const handleMealClick = (mealId) => {
-        setSelectedMealId(mealId);
-        onMealClick(mealId); // Skicka den valda maträttens ID till förälderkomponenten
+        onMealClick(mealId);
     };
 
     return (
@@ -37,8 +35,8 @@ const SearchComponent = ({ onMealClick }) => {
             <input type="text" value={searchTerm} onChange={handleInputChange} placeholder="Sök på en maträtt..." />
             <button onClick={handleSearch}>Sök</button>
             {loading && <p>Laddar...</p>}
-            {selectedMealId && searchResults.length === 0 && <p>Inga sökresultat hittades</p>}
-            {searchResults.length > 0 && !selectedMealId && (
+            {noResultsFound && <p>Inga sökresultat hittades</p>} {/* Visa detta meddelande om inga resultat finns */}
+            {searchResults.length > 0 && (
                 <ul>
                     {searchResults.map(meal => (
                         <RecipeCard key={meal.idMeal} meal={meal} onMealClick={handleMealClick} />
